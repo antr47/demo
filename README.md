@@ -10,7 +10,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 > **Note**: All migration files must be located in the Directus `extensions/migrations` folder.
 
-### How To Create Related Fields:
+### How To Create Related Fields
 
 -   Many to one: `generateM2o: (related_collection,options)`
 
@@ -52,7 +52,7 @@ menu_items: generateField.generateO2m("menu_item", {
 });
 ```
 
-### Create Config Example:
+### Create Config Example
 
 -   File name: `CDH20230425A-create.js`
 
