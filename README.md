@@ -9,7 +9,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 ## Config collection schema
 ###  Create config:
-Example file name: CDH20230425A-create.js
+Example file name: `CDH20230425A-create.js`
 ```javascript
 const {
     generateField,
@@ -171,7 +171,7 @@ module.exports = {
 };
 ```
 ### Update  config:
-Example file name:  CDH20230425B-update.js
+Example file name:  `CDH20230425B-update.js`
 ```javascript
 const {
     generateField,
@@ -245,5 +245,3 @@ module.exports = {
 ```
 #### Note:
 > Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
-
-
