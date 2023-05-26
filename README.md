@@ -4,11 +4,10 @@
 
 ##  Usage
 
-All migrations must be located in the `extensions/migrations` folder.
-
 ### Schema Config
 
 The file name follows the following structure: `[identifier]-[name].js` for example: `20201202A-my-custom-migration.js`
+>**Note**: All migrations must be located in the `extensions/migrations` folder.
 
 ### Create Related Fileds:
 
