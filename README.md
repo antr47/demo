@@ -1,15 +1,19 @@
-Migrations can be used to manage the contents of Directus collections (e.g. initial hydration). In order to do it, you must ensure that the schema is up to date before running your migrations.
-# Installation
+# Directus Migration Tools
+## Installation
+
 `npm i directus-migration-tools`
-#  Usage
+
+##  Usage
+
 All migrations must be located in the `extensions/migrations` folder.
 
-## File Name 
+### Schema Config
+
 The file name follows the following structure: `[identifier]-[name].js` for example: `20201202A-my-custom-migration.js`
 
-## Config collection schema
-###  Create config:
-Example file name: `CDH20230425A-create.js`
+###  Create Config Example:
+
+ -  File name: `CDH20230425A-create.js`
 ```javascript
 const {
     generateField,
@@ -101,11 +105,6 @@ const config = [
     {
         collection: {
             name: "services_contents",
-            meta: {
-                color: "#B31B1B",
-                group: "services",
-                display_template: "{{subtitle}}",
-            },
         },
         fields: {
             ...defaultFields,
@@ -170,8 +169,10 @@ module.exports = {
     },
 };
 ```
-### Update  config:
-Example file name:  `CDH20230425B-update.js`
+### Update Config Example: 
+
+ - File name:  `CDH20230425B-update.js`
+
 ```javascript
 const {
     generateField,
@@ -219,16 +220,8 @@ const config = [
             }),
             partner: generateField.generateM2o("partners"),
             category: generateField.generateM2o("projects_categories"),
-            solutions: generateField.generateM2m("solutions", "projects_solutions_related", {
-                meta: {
-                    width: "half",
-                },
-            }),
-            related_projects: generateField.generateM2m("projects", "projects_projects_related", {
-                meta: {
-                    width: "half",
-                },
-            }),
+            solutions: generateField.generateM2m("solutions", "projects_solutions_related"),
+            related_projects: generateField.generateM2m("projects", "projects_projects_related"),
         },
     },
 ];
@@ -245,3 +238,5 @@ module.exports = {
 ```
 #### Note:
 > Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
+
+
