@@ -2,19 +2,21 @@
 
 `npm i directus-migration-tools`
 
-##  Usage
+## Usage
 
 ### Schema Config
 
 The file name follows the following structure: `[identifier]-[name].js` for example: `20201202A-my-custom-migration.js`
->**Note**: All migration files must be located in the Directus `extensions/migrations` folder.
 
-### Create Related Fileds:
+> **Note**: All migration files must be located in the Directus `extensions/migrations` folder.
 
- - Many to one: `generateM2o: (related_collection,options)`
+### Create Related Fields:
+
+-   Many to one: `generateM2o: (related_collection,options)`
 
 Example:
-```javascript 
+
+```javascript
    projects_translation: generateField.generateM2o(
                 "projects_translations",
                 {
@@ -27,30 +29,33 @@ Example:
                     },
                 }
             ),
- ```
-
- - Many to many: `generateM2m: (related_collection,temp_collection, options , fields_extend)`
-
-Example: 
-```javascript 
-  projects: generateField.generateM2m("projects", "services_projects_related"),
- ```
- - One to many: `generateO2m: (related_collection,related_field ,options)`
-
-Example: 
-```javascript
-menu_items: generateField.generateO2m("menu_item" , {
-				related_field: "menu" ,
-				meta: {
-					sort: 6
-				}
-			})
 ```
 
+-   Many to many: `generateM2m: (related_collection,temp_collection, options , fields_extend)`
 
-###  Create Config Example:
+Example:
 
- -  File name: `CDH20230425A-create.js`
+```javascript
+  projects: generateField.generateM2m("projects", "services_projects_related"),
+```
+
+-   One to many: `generateO2m: (related_collection,related_field ,options)`
+
+Example:
+
+```javascript
+menu_items: generateField.generateO2m("menu_item", {
+    related_field: "menu",
+    meta: {
+        sort: 6,
+    },
+});
+```
+
+### Create Config Example:
+
+-   File name: `CDH20230425A-create.js`
+
 ```javascript
 const {
     generateField,
@@ -75,7 +80,9 @@ const config = [
         fields: {
             ...defaultFields,
             id: generateField.genPrimaryKey(),
-            translations: generateSpecField.translations("languages", "projects_categories_translations",
+            translations: generateSpecField.translations(
+                "languages",
+                "projects_categories_translations",
                 {
                     title: generateField.genNormal(),
                 }
@@ -90,7 +97,9 @@ const config = [
             ...defaultFields,
             id: generateField.genPrimaryKey(),
             icon: generateField.genNormal(),
-            translations: generateSpecField.translations("languages", "services_items_translations",
+            translations: generateSpecField.translations(
+                "languages",
+                "services_items_translations",
                 {
                     title: generateField.genNormal(),
                     description: generateSpecField.textArea(),
@@ -113,7 +122,7 @@ const config = [
                 {
                     text: "Problems",
                     value: "1",
-                }
+                },
             ]),
             title: generateField.genNormal("string"),
             subtitle: generateField.genNormal("string"),
@@ -206,9 +215,10 @@ module.exports = {
     },
 };
 ```
-### Update Config Example: 
 
- - File name:  `CDH20230425B-update.js`
+### Update Config Example:
+
+-   File name: `CDH20230425B-update.js`
 
 ```javascript
 const {
@@ -224,10 +234,16 @@ const config = [
             name: "services",
         },
         fields: {
-            items: generateField.generateM2m("services_items","services_items_related"),
-            projects: generateField.generateM2m("projects", "services_projects_related"),
-            tags: generateField.generateM2m("tags","services_tags"),
-            faqs: generateField.generateM2m("faqs","services_faqs"),
+            items: generateField.generateM2m(
+                "services_items",
+                "services_items_related"
+            ),
+            projects: generateField.generateM2m(
+                "projects",
+                "services_projects_related"
+            ),
+            tags: generateField.generateM2m("tags", "services_tags"),
+            faqs: generateField.generateM2m("faqs", "services_faqs"),
         },
     },
     {
@@ -257,8 +273,14 @@ const config = [
             }),
             partner: generateField.generateM2o("partners"),
             category: generateField.generateM2o("projects_categories"),
-            solutions: generateField.generateM2m("solutions", "projects_solutions_related"),
-            related_projects: generateField.generateM2m("projects", "projects_projects_related"),
+            solutions: generateField.generateM2m(
+                "solutions",
+                "projects_solutions_related"
+            ),
+            related_projects: generateField.generateM2m(
+                "projects",
+                "projects_projects_related"
+            ),
         },
     },
 ];
@@ -271,7 +293,8 @@ module.exports = {
         await downUpdateKnex(knex, config);
     },
 };
-
 ```
+
 #### Note:
+
 > Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
