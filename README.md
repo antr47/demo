@@ -10,7 +10,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 > **Note**: All migration files must be located in the Directus `extensions/migrations` folder.
 
-### Create Related Fields:
+### How To Create Related Fields:
 
 -   Many to one: `generateM2o: (related_collection,options)`
 
