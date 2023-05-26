@@ -38,7 +38,7 @@ type: generateField.genNormal("integer", {
 
 ### How To Create Special Fields (Default Fields, Radio Button, Repeater, Dropdown, Image, Toggle, etc.)
 
-Special fields can be created by some functions as: sort, status, userCreated, userUpdated, dateCreated, dateUpdated, radioButton, repeater, image, files, toggle, dropdown, checkBoxes, textArea, wysiwyg,...
+Special fields can be created by some functions: sort, status, userCreated, userUpdated, dateCreated, dateUpdated, radioButton, repeater, image, files, toggle, dropdown, checkBoxes, textArea, wysiwyg,...
 
 Example:
 
@@ -109,7 +109,7 @@ generateM2m: related_collection,
     };
 ```
 
-> **Note\*\***Require\*\*: related_collection, temp_collection, field_left, field_right
+> **Require**: related_collection, temp_collection, field_left, field_right
 
 Example:
 
