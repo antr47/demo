@@ -7,7 +7,7 @@
 ### Schema Config
 
 The file name follows the following structure: `[identifier]-[name].js` for example: `20201202A-my-custom-migration.js`
->**Note**: All migration files must be located in the `extensions/migrations` folder.
+>**Note**: All migration files must be located in the Directus `extensions/migrations` folder.
 
 ### Create Related Fileds:
 
