@@ -1,4 +1,4 @@
-## Installation
+[field_name]: this.generateField## Installation
 
 `npm i directus-migration-tools`
 
@@ -14,7 +14,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 Structure: `[field_name]: this.generateField.genNormal: (type, options)`
 
-> **Require**: type
+> **Note** **Require**: type
 
 Example:
 
@@ -78,7 +78,7 @@ thumbnail: generateSpecField.image(),
 ### How To Create Related Fields
 
 -   Many to one: `generateM2o: (related_collection,options)`
-    > **Require**: related_collection
+    > **Note** **Require**: related_collection
         Example:
 
 ```javascript
@@ -109,7 +109,7 @@ generateM2m: related_collection,
     };
 ```
 
-> **Require**: related_collection, temp_collection, field_left, field_right
+> **Note\*\***Require\*\*: related_collection, temp_collection, field_left, field_right
 
 Example:
 
@@ -126,7 +126,7 @@ related: generateField.generateM2m("test","junction_test",{},{
 
 -   One to many: `generateO2m: (related_collection,related_field ,options)`
 
-> **Require**: related_collection, related_field
+> **Note** **Require**: related_collection, related_field
 
 Example:
 
@@ -275,8 +275,8 @@ export const config = [
             title: generateSpecField.textArea(),
             description: generateSpecField.wysiwyg(),
             image: generateSpecField.image(),
-            time_left: generateField.genNormal('integer'),
-            minimum_score: generateField.genNormal('integer'),
+            time_left: generateField.genNormal("integer"),
+            minimum_score: generateField.genNormal("integer"),
             questions: generateField.generateM2m(
                 "question",
                 "quiz_questions",
