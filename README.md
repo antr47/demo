@@ -295,6 +295,4 @@ module.exports = {
 };
 ```
 
-#### Note:
-
-> Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
+> **Note** Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
