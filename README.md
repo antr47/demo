@@ -13,6 +13,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 ### Create Related Fileds:
 
  - Many to one: `generateM2o: (related_collection,options)`
+
 Example:
 ```javascript 
    projects_translation: generateField.generateM2o(
@@ -30,11 +31,13 @@ Example:
  ```
 
  - Many to many: `generateM2m: (related_collection,temp_collection, options , fields_extend)`
+
 Example: 
 ```javascript 
   projects: generateField.generateM2m("projects", "services_projects_related"),
  ```
  - One to many: `generateO2m: (related_collection,related_field ,options)`
+
 Example: 
 ```javascript
 menu_items: generateField.generateO2m("menu_item" , {
