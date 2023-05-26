@@ -1,4 +1,4 @@
-[field_name]: this.generateField## Installation
+## Installation
 
 `npm i directus-migration-tools`
 
