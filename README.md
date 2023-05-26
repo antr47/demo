@@ -12,7 +12,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 ### How To Create Normal Fields
 
-Structure: `[field_name]: this.generateField.genNormal: (type, options)`
+Structure: `[field_name]: generateField.genNormal: (type, options)`
 
 > **Require**: type
 
