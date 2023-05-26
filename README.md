@@ -8,9 +8,9 @@ All migrations must be located in the `extensions/migrations` folder.
 The file name follows the following structure: `[identifier]-[name].js` for example: `20201202A-my-custom-migration.js`
 
 ## Config collection schema
-#### Create collection config:
+###  Create config:
 Example file name: CDH20230425A-create.js
-```
+```javascript
 const {
     generateField,
     generateSpecField,
@@ -30,11 +30,6 @@ const config = [
     {
         collection: {
             name: "projects_categories",
-            meta: {
-                color: "#B31B1B",
-                group: "projects",
-                display_template: "{{translations}}",
-            },
         },
         fields: {
             ...defaultFields,
@@ -42,17 +37,6 @@ const config = [
             translations: generateSpecField.translations("languages", "projects_categories_translations",
                 {
                     title: generateField.genNormal(),
-                },
-                {
-                    meta: {
-                        display: "translations",
-                        display_options: {
-                            template: "{{title}}",
-                            languageField: "name",
-                            defaultLanguage: "vi-Vi",
-                            userLanguage: true,
-                        },
-                    },
                 }
             ),
         },
@@ -60,12 +44,6 @@ const config = [
     {
         collection: {
             name: "services_items",
-            meta: {
-                color: "#B31B1B",
-                group: "services",
-                display_template: "{{translations}}",
-                hidden: true,
-            },
         },
         fields: {
             ...defaultFields,
@@ -75,17 +53,6 @@ const config = [
                 {
                     title: generateField.genNormal(),
                     description: generateSpecField.textArea(),
-                },
-                {
-                    meta: {
-                        display: "translations",
-                        display_options: {
-                            template: "{{title}}",
-                            languageField: "name",
-                            defaultLanguage: "vi-Vi",
-                            userLanguage: true,
-                        },
-                    },
                 }
             ),
         },
@@ -93,11 +60,6 @@ const config = [
     {
         collection: {
             name: "projects_contents",
-            meta: {
-                color: "#B31B1B",
-                group: "projects",
-                display_template: "{{subtitle}}",
-            },
         },
         fields: {
             ...defaultFields,
@@ -110,15 +72,7 @@ const config = [
                 {
                     text: "Problems",
                     value: "1",
-                },
-                {
-                    text: "Solutions",
-                    value: "2",
-                },
-                {
-                    text: "Related Projects",
-                    value: "3",
-                },
+                }
             ]),
             title: generateField.genNormal("string"),
             subtitle: generateField.genNormal("string"),
@@ -165,23 +119,11 @@ const config = [
                     text: "Services",
                     value: "1",
                 },
-                {
-                    text: "Experiences",
-                    value: "2",
-                },
-                {
-                    text: "Faqs",
-                    value: "3",
-                },
             ]),
             title: generateField.genNormal("string"),
             subtitle: generateField.genNormal("string"),
             description: generateSpecField.textArea(),
-            sort: generateSpecField.sort({
-                meta: {
-                    hidden: false,
-                },
-            }),
+            sort: generateSpecField.sort(),
 
             position: generateSpecField.radioButton(
                 [
@@ -228,9 +170,9 @@ module.exports = {
     },
 };
 ```
-### Update collection config:
+### Update  config:
 Example file name:  CDH20230425B-update.js
-```
+```javascript
 const {
     generateField,
     generateSpecField,
@@ -244,26 +186,10 @@ const config = [
             name: "services",
         },
         fields: {
-            items: generateField.generateM2m("services_items","services_items_related", {
-                meta: {
-                    width: "half",
-                },
-            }),
-            projects: generateField.generateM2m("projects", "services_projects_related", {
-                meta: {
-                    width: "half",
-                },
-            }),
-            tags: generateField.generateM2m("tags","services_tags", {
-                meta: {
-                    width: "half",
-                },
-            }),
-            faqs: generateField.generateM2m("faqs","services_faqs", {
-                meta: {
-                    width: "half",
-                },
-            }),
+            items: generateField.generateM2m("services_items","services_items_related"),
+            projects: generateField.generateM2m("projects", "services_projects_related"),
+            tags: generateField.generateM2m("tags","services_tags"),
+            faqs: generateField.generateM2m("faqs","services_faqs"),
         },
     },
     {
@@ -273,34 +199,6 @@ const config = [
         fields: {
             subtitle: generateField.genNormal("string"),
             subdescription: generateSpecField.textArea(),
-            statistics: generateSpecField.repeater({
-                meta: {
-                    options: {
-                        fields: [
-                            {
-                                field: "quantity",
-                                name: "quantity",
-                                type: "string",
-                                meta: {
-                                    field: "quantity",
-                                    type: "string",
-                                    interface: "input",
-                                },
-                            },
-                            {
-                                field: "description",
-                                name: "description",
-                                type: "string",
-                                meta: {
-                                    field: "description",
-                                    type: "string",
-                                    interface: "input",
-                                },
-                            },
-                        ],
-                    },
-                },
-            }),
         },
     },
     {
@@ -349,4 +247,3 @@ module.exports = {
 > Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
 
 
-    
