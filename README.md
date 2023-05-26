@@ -1,5 +1,9 @@
 # Config  khi sử dụng:
 
+## Installation
+
+npm i directus-migration-tools
+
 ## B1. Vào file ./config/config.ts để sửa lại các thuộc tính
 ```
     collection (string) : route truy cập chính vào controller
