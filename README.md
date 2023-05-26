@@ -36,13 +36,13 @@ type: generateField.genNormal("integer", {
 
 ```
 
-### How To Create Special Fields
+### How To Create Special Fields (Default Fields, Radio Button, Repeater, Dropdown, Image, Toggle, etc.)
 
 Special fields can be created by some functions as: sort, status, userCreated, userUpdated, dateCreated, dateUpdated, radioButton, repeater, image, files, toggle, dropdown, checkBoxes, textArea, wysiwyg,...
 
 Example:
 
--   Create field with Radio Button type:
+-   Create field with interface Radio Button:
 
 ```javascript
 module: generateSpecField.radioButton([
@@ -57,7 +57,7 @@ module: generateSpecField.radioButton([
     ]),
 ```
 
--   Create field with Translations type:
+-   Create field with interface Translations:
 
 ```javascript
 translations: generateSpecField.translations(
@@ -69,7 +69,7 @@ translations: generateSpecField.translations(
 );
 ```
 
--   Create field with Image type:
+-   Create field with interface Image:
 
 ```javascript
 thumbnail: generateSpecField.image(),
@@ -196,47 +196,53 @@ export const config = [
     },
     {
         collection: {
-            name: "result",
+            name: "question",
+            meta: {
+                group: "quiz",
+            },
         },
         fields: {
-            user: generateField.generateM2o("directus_users", {
-                field_o2m: {
-                    create: false,
-                    field_name: "results",
+            ...defaultFields,
+            type: generateSpecField.dropDown([
+                { text: "Trắc nghiệm", value: 0 },
+                { text: "Tự luận", value: 1 },
+            ]),
+            type_answer: generateSpecField.radioButton([
+                {
+                    text: "Single Answer",
+                    value: 0,
                 },
-                meta: { hidden: true },
-            }),
-            id_topic: generateField.generateM2o("topic", {
-                field_o2m: {
-                    create: false,
-                    field_name: "results",
+                {
+                    text: "Multiple Answers",
+                    value: 1,
                 },
-                meta: { hidden: true },
-            }),
+            ]),
+            title: generateSpecField.textArea(),
+            description: generateSpecField.wysiwyg(),
+            image: generateSpecField.image(),
         },
     },
     {
         collection: {
-            name: "quiz",
+            name: "answer",
+            meta: {
+                group: "question",
+            },
         },
         fields: {
-            questions: generateField.generateM2m(
-                "question",
-                "quiz_questions",
-                {},
+            ...defaultFields,
+            type: generateSpecField.radioButton([
                 {
-                    field_left: "quiz_id",
-                    field_right: "question_id",
-                    fields_data: {
-                        sort: generateSpecField.sort(),
-                        score: generateField.genNormal("integer", {
-                            options: {
-                                min: 0,
-                            },
-                        }),
-                    },
-                }
-            ),
+                    text: "Image",
+                    value: 0,
+                },
+                {
+                    text: "Text",
+                    value: 1,
+                },
+            ]),
+            title: generateSpecField.textArea(),
+            image: generateSpecField.image(),
         },
     },
     {
@@ -254,6 +260,37 @@ export const config = [
                     fields_data: {
                         sort: generateSpecField.sort(),
                         correct: generateSpecField.toggle(),
+                    },
+                }
+            ),
+        },
+    },
+    ,
+    {
+        collection: {
+            name: "quiz",
+        },
+        fields: {
+            ...defaultFields,
+            title: generateSpecField.textArea(),
+            description: generateSpecField.wysiwyg(),
+            image: generateSpecField.image(),
+            time_left: generateField.genNormal('integer'),
+            minimum_score: generateField.genNormal('integer'),
+            questions: generateField.generateM2m(
+                "question",
+                "quiz_questions",
+                {},
+                {
+                    field_left: "quiz_id",
+                    field_right: "question_id",
+                    fields_data: {
+                        sort: generateSpecField.sort(),
+                        score: generateField.genNormal("integer", {
+                            options: {
+                                min: 0,
+                            },
+                        }),
                     },
                 }
             ),
