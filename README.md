@@ -10,11 +10,76 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 > **Note**: All migration files must be located in the Directus `extensions/migrations` folder.
 
+### How To Create Normal Fields
+
+Structure: `[field_name]: this.generateField.genNormal: (type, options)`
+
+> **Require**: type
+
+Example:
+
+-   Create field by genNormal:
+
+```javascript
+type: generateField.genNormal("integer", {
+    meta: {
+        interface: "select-dropdown",
+        options: {
+            choices: [
+                    { text: "Selected-respone", value: 0 },
+                    { text: "Constructed-respone", value: 1 },
+            ],
+        },
+        width: "half",
+    },
+}),
+
+```
+
+### How To Create Special Fields
+
+Special fields can be created by some functions as: sort, status, userCreated, userUpdated, dateCreated, dateUpdated, radioButton, repeater, image, files, toggle, dropdown, checkBoxes, textArea, wysiwyg,...
+
+Example:
+
+-   Create field with Radio Button type:
+
+```javascript
+module: generateSpecField.radioButton([
+        {
+            text: "Overview",
+            value: "0",
+        },
+        {
+            text: "Problems",
+            value: "1",
+        },
+    ]),
+```
+
+-   Create field with Translations type:
+
+```javascript
+translations: generateSpecField.translations(
+    "languages",
+    "projects_categories_translations",
+    {
+        title: generateField.genNormal(),
+    }
+);
+```
+
+-   Create field with Image type:
+
+```javascript
+thumbnail: generateSpecField.image(),
+```
+
 ### How To Create Related Fields
 
 -   Many to one: `generateM2o: (related_collection,options)`
-
-Example:
+    > **Require**: related_collection
+        Example:
 
 ```javascript
    projects_translation: generateField.generateM2o(
@@ -31,15 +96,37 @@ Example:
             ),
 ```
 
--   Many to many: `generateM2m: (related_collection,temp_collection, options , fields_extend)`
+-   Many to many:
+
+```javascript
+generateM2m: related_collection,
+    temp_collection,
+    options,
+    {
+        field_left: [field_left],
+        field_right: [field_right],
+        fields_data,
+    };
+```
+
+> **Require**: related_collection, temp_collection, field_left, field_right
 
 Example:
 
 ```javascript
-  projects: generateField.generateM2m("projects", "services_projects_related"),
+related: generateField.generateM2m("test","junction_test",{},{
+        field_left: "test2_id",
+        field_right: "test_id",
+        fields_data: {
+            title: generateField.genNormal() ,
+            url: generateField.genNormal() ,
+        }
+    }),
 ```
 
 -   One to many: `generateO2m: (related_collection,related_field ,options)`
+
+> **Require**: related_collection, related_field
 
 Example:
 
@@ -60,89 +147,93 @@ menu_items: generateField.generateO2m("menu_item", {
 const {
     generateField,
     generateSpecField,
-    upCreateKnex,
-    downCreateKnex,
 } = require("directus-migration-tools");
 
-const defaultFields = {
-    user_created: generateSpecField.userCreated(),
-    date_created: generateSpecField.dateCreated(),
-    user_updated: generateSpecField.userUpdated(),
-    date_updated: generateSpecField.dateUpdated(),
+export const defaultFields = {
+    id: generateField.genPrimaryKey(),
     status: generateSpecField.status(),
+    sort: generateSpecField.sort(),
+    date_created: generateSpecField.dateCreated(),
+    date_updated: generateSpecField.dateUpdated(),
+    user_created: generateSpecField.userCreated(),
+    user_updated: generateSpecField.userUpdated(),
 };
-
-const config = [
+export const config = [
     {
         collection: {
-            name: "projects_categories",
+            name: "course",
         },
         fields: {
             ...defaultFields,
-            id: generateField.genPrimaryKey(),
-            translations: generateSpecField.translations(
-                "languages",
-                "projects_categories_translations",
-                {
-                    title: generateField.genNormal(),
-                }
-            ),
-        },
-    },
-    {
-        collection: {
-            name: "services_items",
-        },
-        fields: {
-            ...defaultFields,
-            id: generateField.genPrimaryKey(),
-            icon: generateField.genNormal(),
-            translations: generateSpecField.translations(
-                "languages",
-                "services_items_translations",
-                {
-                    title: generateField.genNormal(),
-                    description: generateSpecField.textArea(),
-                }
-            ),
-        },
-    },
-    {
-        collection: {
-            name: "projects_contents",
-        },
-        fields: {
-            ...defaultFields,
-            id: generateField.genPrimaryKey(),
-            module: generateSpecField.radioButton([
-                {
-                    text: "Overview",
-                    value: "0",
-                },
-                {
-                    text: "Problems",
-                    value: "1",
-                },
-            ]),
-            title: generateField.genNormal("string"),
-            subtitle: generateField.genNormal("string"),
-            description: generateSpecField.textArea(),
-            sort: generateSpecField.sort({
+            thumbnail: generateSpecField.image(),
+            title: generateField.genNormal(),
+            author: generateField.genNormal(),
+            content: generateSpecField.wysiwyg(),
+            limit_time: generateField.genNormal("integer", {
                 meta: {
-                    hidden: false,
+                    width: "half",
                 },
             }),
-            images: generateSpecField.files("projects_contents_files"),
-            content: generateSpecField.wysiwyg(),
-            projects_translation: generateField.generateM2o(
-                "projects_translations",
+            limit_score: generateField.genNormal("integer", {
+                meta: {
+                    width: "half",
+                },
+            }),
+        },
+    },
+    {
+        collection: {
+            name: "rate",
+        },
+        fields: {
+            course: generateField.generateM2o("course", {
+                field_o2m: {
+                    create: true,
+                    field_name: "rates",
+                },
+            }),
+        },
+    },
+    {
+        collection: {
+            name: "result",
+        },
+        fields: {
+            user: generateField.generateM2o("directus_users", {
+                field_o2m: {
+                    create: false,
+                    field_name: "results",
+                },
+                meta: { hidden: true },
+            }),
+            id_topic: generateField.generateM2o("topic", {
+                field_o2m: {
+                    create: false,
+                    field_name: "results",
+                },
+                meta: { hidden: true },
+            }),
+        },
+    },
+    {
+        collection: {
+            name: "quiz",
+        },
+        fields: {
+            questions: generateField.generateM2m(
+                "question",
+                "quiz_questions",
+                {},
                 {
-                    field_o2m: {
-                        create: true,
-                        field_name: "contents",
-                    },
-                    meta: {
-                        hidden: true,
+                    field_left: "quiz_id",
+                    field_right: "question_id",
+                    fields_data: {
+                        sort: generateSpecField.sort(),
+                        score: generateField.genNormal("integer", {
+                            options: {
+                                min: 0,
+                            },
+                        }),
                     },
                 }
             ),
@@ -150,70 +241,25 @@ const config = [
     },
     {
         collection: {
-            name: "services_contents",
+            name: "question",
         },
         fields: {
-            ...defaultFields,
-            id: generateField.genPrimaryKey(),
-            module: generateSpecField.radioButton([
+            answers: generateField.generateM2m(
+                "answer",
+                "question_answers",
+                {},
                 {
-                    text: "Overview",
-                    value: "0",
-                },
-                {
-                    text: "Services",
-                    value: "1",
-                },
-            ]),
-            title: generateField.genNormal("string"),
-            subtitle: generateField.genNormal("string"),
-            description: generateSpecField.textArea(),
-            sort: generateSpecField.sort(),
-
-            position: generateSpecField.radioButton(
-                [
-                    {
-                        text: "Left",
-                        value: "0",
-                    },
-                    {
-                        text: "Right",
-                        value: "1",
-                    },
-                ],
-                {
-                    meta: {
-                        hidden: true,
-                        conditions: [overviewCondition],
-                    },
-                }
-            ),
-            thumbnail: generateSpecField.image(),
-            content: generateSpecField.wysiwyg(),
-            services_translation: generateField.generateM2o(
-                "services_translations",
-                {
-                    field_o2m: {
-                        create: true,
-                        field_name: "contents",
-                    },
-                    meta: {
-                        hidden: true,
+                    field_left: "question_id",
+                    field_right: "answer_id",
+                    fields_data: {
+                        sort: generateSpecField.sort(),
+                        correct: generateSpecField.toggle(),
                     },
                 }
             ),
         },
     },
 ];
-
-module.exports = {
-    async up(knex) {
-        await upCreateKnex(knex, config);
-    },
-    async down(knex) {
-        await downCreateKnex(knex, config);
-    },
-};
 ```
 
 ### Update Config Example:
