@@ -14,7 +14,7 @@ The file name follows the following structure: `[identifier]-[name].js` for exam
 
 Structure: `[field_name]: this.generateField.genNormal: (type, options)`
 
-> **Note** **Require**: type
+> **Require**: type
 
 Example:
 
@@ -78,7 +78,7 @@ thumbnail: generateSpecField.image(),
 ### How To Create Related Fields
 
 -   Many to one: `generateM2o: (related_collection,options)`
-    > **Note** **Require**: related_collection
+    > **Require**: related_collection
         Example:
 
 ```javascript
@@ -126,7 +126,7 @@ related: generateField.generateM2m("test","junction_test",{},{
 
 -   One to many: `generateO2m: (related_collection,related_field ,options)`
 
-> **Note** **Require**: related_collection, related_field
+> **Require**: related_collection, related_field
 
 Example:
 
