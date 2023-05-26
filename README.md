@@ -1,4 +1,3 @@
-# Directus Migration Tools
 ## Installation
 
 `npm i directus-migration-tools`
