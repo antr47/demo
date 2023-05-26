@@ -10,6 +10,42 @@ All migrations must be located in the `extensions/migrations` folder.
 
 The file name follows the following structure: `[identifier]-[name].js` for example: `20201202A-my-custom-migration.js`
 
+### Create Related Fileds:
+
+ - Many to one: `generateM2o: (related_collection,options)`
+Example:
+```javascript 
+   projects_translation: generateField.generateM2o(
+                "projects_translations",
+                {
+                    field_o2m: {
+                        create: true,
+                        field_name: "contents",
+                    },
+                    meta: {
+                        hidden: true,
+                    },
+                }
+            ),
+ ```
+
+ - Many to many: `generateM2m: (related_collection,temp_collection, options , fields_extend)`
+Example: 
+```javascript 
+  projects: generateField.generateM2m("projects", "services_projects_related"),
+ ```
+ - One to many: `generateO2m: (related_collection,related_field ,options)`
+Example: 
+```javascript
+menu_items: generateField.generateO2m("menu_item" , {
+				related_field: "menu" ,
+				meta: {
+					sort: 6
+				}
+			})
+```
+
+
 ###  Create Config Example:
 
  -  File name: `CDH20230425A-create.js`
@@ -237,5 +273,3 @@ module.exports = {
 ```
 #### Note:
 > Migrations have to export an `up` and a `down` function. These functions get a [Knex](http://knexjs.org/) instance that can be used to do virtually whatever.
-
-
